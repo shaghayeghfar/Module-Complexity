@@ -1,16 +1,21 @@
+from typing import Optional
+
+
 class Node:
-    def __init__(self, value):
-        self.value = value
-        self.next = None
-        self.previous = None
+    __slots__ = ("value", "next", "previous")
+
+    def __init__(self, value: str) -> None:
+        self.value: str = value
+        self.next: Optional[Node] = None
+        self.previous: Optional[Node] = None
 
 
 class LinkedList:
-    def __init__(self):
-        self.head = None
-        self.tail = None
+    def __init__(self) -> None:
+        self.head: Optional[Node] = None
+        self.tail: Optional[Node] = None
 
-    def push_head(self, value):
+    def push_head(self, value: str) -> Node:
         new_node = Node(value)
 
         if self.head is None:
@@ -23,22 +28,16 @@ class LinkedList:
 
         return new_node
 
-    def pop_tail(self):
+    def pop_tail(self) -> str:
         if self.tail is None:
             raise IndexError("Cannot pop from an empty list")
 
         removed_node = self.tail
-
-        if self.head == self.tail:
-            self.head = None
-            self.tail = None
-        else:
-            self.tail = self.tail.previous
-            self.tail.next = None
+        self.remove(removed_node)
 
         return removed_node.value
 
-    def remove(self, node):
+    def remove(self, node: Node) -> None:
         if node.previous is None:
             self.head = node.next
         else:
