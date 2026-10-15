@@ -1,24 +1,26 @@
+
 from typing import List
 
 
-def find_longest_common_prefix(strings: List[str]):
+def find_longest_common_prefix(strings: List[str]) -> str:
     """
-    find_longest_common_prefix returns the longest string common at the start of any two strings in the passed list.
+    Return the longest prefix shared by any two strings.
+    Return an empty string if fewer than two strings are provided.
+    """
+    if len(strings) < 2:
+        return ""
 
-    In the event that an empty list, a list containing one string, or a list of strings with no common prefixes is passed, the empty string will be returned.
-    """
+    prefix_counts = {}
+
+    for string in strings:
+        for i in range(1, len(string) + 1):
+            prefix = string[:i]
+            prefix_counts[prefix] = prefix_counts.get(prefix, 0) + 1
+
     longest = ""
-    for string_index, string in enumerate(strings):
-        for other_string in strings[string_index+1:]:
-            common = find_common_prefix(string, other_string)
-            if len(common) > len(longest):
-                longest = common
+
+    for prefix, count in prefix_counts.items():
+        if count >= 2 and len(prefix) > len(longest):
+            longest = prefix
+
     return longest
-
-
-def find_common_prefix(left: str, right: str) -> str:
-    min_length = min(len(left), len(right))
-    for i in range(min_length):
-        if left[i] != right[i]:
-            return left[:i]
-    return left[:min_length]
